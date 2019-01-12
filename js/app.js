@@ -1,9 +1,16 @@
 (function IIFE() {
+    document.getElementById("loan-form").addEventListener("submit", function (e) {
+        document.getElementById("loading").classList.add("d-block");
+        document.querySelector(".results").classList.remove("d-block");
 
+        setTimeout(function () {
+            calculateLoan();
+        }, 3000);
 
-    document.getElementById("loan-form").addEventListener("submit", calculateLoan);
+        e.preventDefault();
+    });
 
-    function calculateLoan(e) {
+    function calculateLoan() {
         const amount = document.getElementById("amount");
         const interest = document.getElementById("interest");
         const years = document.getElementById("years");
@@ -21,24 +28,23 @@
             monthlyPayment.value = monthly.toFixed(2);
             totalPayment.value = (monthly * calculatedPayments).toFixed(2);
             totalInterest.value = ((monthly * calculatedPayments) - principal).toFixed(2);
+
+            document.getElementById("loading").classList.remove("d-block");
+            document.querySelector(".results").classList.add("d-block");
+
+            amount.value = "";
+            interest.value = "";
+            years.value = "";
         } else {
             showError("Please checkout your numbers.");
+            document.getElementById("loading").classList.remove("d-block");
             if (monthlyPayment.value.length != 0) {
                 monthlyPayment.value = "";
                 totalPayment.value = "";
                 totalInterest.value = "";
             }
         }
-
-        setTimeout(() => {
-            amount.value = "";
-            interest.value = "";
-            years.value = "";
-        }, 5000);
-
-        e.preventDefault();
     }
-
 
     function showError(error) {
         const errorDiv = document.createElement("div");
