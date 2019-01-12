@@ -22,7 +22,12 @@
             totalPayment.value = (monthly * calculatedPayments).toFixed(2);
             totalInterest.value = ((monthly * calculatedPayments) - principal).toFixed(2);
         } else {
-            console.log("Please check your numbers!");
+            showError("Please checkout your numbers.");
+            if (monthlyPayment.value.length != 0) {
+                monthlyPayment.value = "";
+                totalPayment.value = "";
+                totalInterest.value = "";
+            }
         }
 
         setTimeout(() => {
@@ -34,6 +39,21 @@
         e.preventDefault();
     }
 
+
+    function showError(error) {
+        const errorDiv = document.createElement("div");
+        errorDiv.className = "alert alert-danger";
+        errorDiv.append(document.createTextNode(error));
+        const card = document.querySelector(".card");
+        const heading = document.querySelector(".heading");
+        card.insertBefore(errorDiv, heading);
+
+        setTimeout(clearError, 3000);
+    }
+
+    function clearError() {
+        document.querySelector(".alert").remove();
+    }
 })();
 
 
